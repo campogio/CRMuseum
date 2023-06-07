@@ -1,0 +1,22 @@
+.top-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  scale: 50%;
+}
+
+.bottom-buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 50%;
+  width: 100%;
+}
+
+.button{
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}

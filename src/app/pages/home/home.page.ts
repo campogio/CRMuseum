@@ -9,4 +9,9 @@ export class HomePage {
 
   constructor() {}
 
-}
+  ngOnInit() {
+    history.pushState(null,'')
+  }
+
+
+  }
