@@ -15,6 +15,8 @@ import {Router} from "@angular/router";
 export class SearchPage implements OnInit {
 
 
+
+
   constructor(private router: Router) {
     SpeechRecognition.requestPermissions()
   }
