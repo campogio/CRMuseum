@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-itempage',
@@ -7,15 +6,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./itempage.page.scss'],
 })
 export class ItempagePage implements OnInit {
-  id: string = 'test';
 
-  constructor(private route: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params =>{
-      console.log(params);
-      this.id = params['id']
-    })
   }
 
 }

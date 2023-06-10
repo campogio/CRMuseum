@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {SpeechRecognition} from "@capacitor-community/speech-recognition";
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import {Router} from "@angular/router";
-
 
 @Component({
   selector: 'app-search',
@@ -19,6 +18,7 @@ export class SearchPage implements OnInit {
 
   constructor(private router: Router) {
     SpeechRecognition.requestPermissions()
+
   }
 
   ngOnInit() {
@@ -35,7 +35,6 @@ export class SearchPage implements OnInit {
     if (result.hasContent) {
       console.log(result.content);
       this.stopScan();
-      this.router.navigate(['itempage'],{queryParams: {id: result.content}});
     }
   };
 

@@ -16,7 +16,7 @@ SplashScreen.show({
 });
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.example.museum',
   appName: 'museum',
   webDir: 'www',
   server: {

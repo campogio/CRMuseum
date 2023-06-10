@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@awesome-cordova-plugins/sqlite": "^6.3.0",
     "@capacitor-community/barcode-scanner": "^4.0.1",
     "@capacitor-community/speech-recognition": "^5.0.0",
     "@capacitor-community/sqlite": "^5.0.2",

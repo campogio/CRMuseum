@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
-import {SQLiteService} from "../../services/sqlite.service";
+import {SqliteService} from "../../services/sqlite.service";
+import {SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 
 @Component({
   selector: 'app-home',
@@ -8,26 +9,18 @@ import {SQLiteService} from "../../services/sqlite.service";
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  constructor(private router: Router,private _sqlite: SQLiteService) {}
+  constructor(private router: Router, private sqlite: SqliteService) {}
 
   ngOnInit() {
-    history.pushState(null,'')
-    this.runTest()
+    history.pushState(null,'');
   }
 
-  async runTest(): Promise<void> {
-    try {
-      let result: any = await this._sqlite.echo('Hello World');
-      console.log(' from Echo ' + result.value);
-    }catch (err) {
-      return Promise.reject(err);
-    }
-  }
   gotoSearch() {
     this.router.navigate(['search'])
   }
 
   gotoGuestBook() {
+    this.sqlite.test();
     this.router.navigate(['guestbook'])
   }
 }
