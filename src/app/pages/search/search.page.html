@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
       <ion-item>
-        <ion-input placeholder="Search.."></ion-input> <ion-button (click)="askUser()"></ion-button>
+        <ion-searchbar placeholder="Search.." (ionInput)="search($event)"></ion-searchbar> <ion-button (click)="askUser()"></ion-button>
       </ion-item>
 </ion-content>

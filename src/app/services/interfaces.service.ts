@@ -2,10 +2,11 @@
 
 export interface searchResult {
   id: number;
+  name: string;
+  isArtist: boolean;
   roomId: number;
   description: string;
   hasPic: boolean;
-  location: string;
 }
 
 export interface fullItem{
@@ -13,7 +14,6 @@ export interface fullItem{
   roomId: number;
   description: string;
   hasPic: boolean;
-  location: string;
 }
 
 export interface searchResults {
