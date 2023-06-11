@@ -1,8 +1,16 @@
-<ion-header [translucent]="true">
+
+<ion-header *ngIf="loading; else Elseblock" [translucent]="true">
   <ion-toolbar>
-    <ion-title>itempage</ion-title>
+    <ion-title>"Not Loaded Yet"</ion-title>
   </ion-toolbar>
 </ion-header>
+<ng-template #Elseblock>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>{{itemData.name}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ng-template>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">

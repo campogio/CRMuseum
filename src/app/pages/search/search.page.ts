@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+
 import {SpeechRecognition} from "@capacitor-community/speech-recognition";
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import {Router} from "@angular/router";
@@ -17,12 +18,14 @@ export class SearchPage implements OnInit {
 
   searchInput : string = "";
 
-  results : searchResult[];
+  data : searchResult[];
+
+  public results : searchResult[];
 
 
   constructor(private router: Router, sqlite: SqliteService) {
     SpeechRecognition.requestPermissions()
-    this.results= sqlite.getSearchData();
+    this.data= sqlite.getSearchData();
   }
 
   ngOnInit() {
@@ -50,11 +53,10 @@ export class SearchPage implements OnInit {
 
   search(event){
     const query = event.target.value.toLowerCase();
-    this.results = this.results.filter((d) => d.name.toLowerCase().indexOf(query) > -1);
+    this.results = this.data.filter((d) => d.name.toLowerCase().includes(query));
     console.log("LOGGING THIS: "+ JSON.stringify(this.results));
 
   }
-
   askUser(){
     this.prepare();
 
@@ -66,6 +68,10 @@ export class SearchPage implements OnInit {
       this.stopScan();
     }
   };
+
+  gotoItemPage(isArtist:boolean,id:number){
+      this.router.navigate(['itempage',isArtist,id])
+  }
 
 
 

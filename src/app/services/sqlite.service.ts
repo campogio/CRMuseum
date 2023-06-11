@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
-import {databaseSeed} from "./no-encryption-utils";
-import {searchResult, searchResults} from "./interfaces.service";
-
+import {databaseOne, databaseThree, databaseTwo, getArt, getArtist} from "./no-encryption-utils";
+import {fullItem, searchResult, searchResults} from "./interfaces.service";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +38,10 @@ export class SqliteService {
         this.db.executeSql("CREATE TABLE IF NOT EXISTS artista_has_media(`artista_idartista` INT NOT NULL,`media_idmedia` INT NOT NULL,PRIMARY KEY (`artista_idartista`, `media_idmedia`))", []);
 
         console.log("SEED DATABASE");
-        this.db.executeSql(databaseSeed,[]);
+        this.db.executeSql(databaseOne,[]);
+        this.db.executeSql(databaseTwo,[]);
+        this.db.executeSql(databaseThree,[]);
+
 
         this.seedSearchData();
 
@@ -69,6 +71,42 @@ export class SqliteService {
             })
         }
     });
+  }
+
+  public async getFullItem(isArtist:boolean,id:number): Promise<fullItem> {
+
+    let item: fullItem = {
+      id: 0,
+      name: "TestMon",
+      roomId: 0,
+      description: "",
+      hasMedia: false
+    };
+
+    if(isArtist){
+      await this.db.executeSql(getArtist,[id]).then((result)=>{
+        item={
+          id: result.rows.item(0).idartista,
+          name: result.rows.item(0).nome,
+          roomId: 0,
+          description: result.rows.item(0).descrizione,
+          hasMedia: false
+        }
+      });
+    }else {
+      await this.db.executeSql(getArt,[id]).then((result)=>{
+         item={
+          id: result.rows.item(0).idopera,
+          name: result.rows.item(0).nome,
+          roomId: 0,
+          description: result.rows.item(0).descrizione,
+          hasMedia: false
+        }
+      });
+    }
+
+    return item;
+    alert("Executed" + JSON.stringify(item))
   }
 
   test(){

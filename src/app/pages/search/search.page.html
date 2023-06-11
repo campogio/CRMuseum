@@ -1,5 +1,20 @@
-<ion-content [fullscreen]="true">
-      <ion-item>
-        <ion-searchbar placeholder="Search.." (ionInput)="search($event)"></ion-searchbar> <ion-button (click)="askUser()"></ion-button>
-      </ion-item>
+<ion-content>
+  <ion-toolbar>
+    <ion-item>
+      <ion-searchbar placeholder="Search.." (ionInput)="search($event)"></ion-searchbar> <ion-button (click)="askUser()"></ion-button>
+    </ion-item>
+  </ion-toolbar>
+
+  <ion-list >
+    <ion-item *ngFor="let result of results">
+      <ion-card class="searchResult" (click)="gotoItemPage(result.isArtist,result.id)">
+        <ion-card-title>{{result.name}}</ion-card-title>
+        {{result.description}}
+
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
+
+

@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/guestbook/guestbook.module').then( m => m.GuestbookPageModule)
   },
   {
-    path: 'itempage',
+    path: 'itempage/:isArtist/:id',
     loadChildren: () => import('./pages/itempage/itempage.module').then( m => m.ItempagePageModule)
   },
   {
