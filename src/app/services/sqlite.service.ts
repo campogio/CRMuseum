@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
-import {createSchema} from "./no-encryption-utils";
+import {databaseSeed} from "./no-encryption-utils";
 
 
 @Injectable({
@@ -21,7 +21,7 @@ export class SqliteService {
         this.db= db;
         try {
           console.log("CREATE artista");
-          this.db.executeSql("CREATE TABLE IF NOT EXISTS artista(`idartista` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL)", []);
+          this.db.executeSql("CREATE TABLE IF NOT EXISTS artista(`idartista` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE,`descrizione` TEXT(1000) NULL)", []);
           console.log("CREATE stanza");
           this.db.executeSql("CREATE TABLE IF NOT EXISTS stanza(`idstanza` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NULL)", []);
           console.log("CREATE media");
@@ -30,12 +30,14 @@ export class SqliteService {
           this.db.executeSql("CREATE TABLE IF NOT EXISTS opera(`idopera` INTEGER PRIMARY KEY AUTOINCREMENT,`artista_idartista` INT NOT NULL,`stanza_idstanza` INT NOT NULL,`nome` VARCHAR(45) NULL,`anno` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL," +
             "FOREIGN KEY (artista_idartista) REFERENCES artista (idartista),FOREIGN KEY (stanza_idstanza) REFERENCES stanza (idstanza))", []);
           console.log("CREATE guestbookEntry");
-          this.db.executeSql("CREATE TABLE IF NOT EXISTS guestbookEntry(`idguestbookEntry` INTEGER PRIMARY KEY AUTOINCREMENT,`testo` TINYTEXT NULL,`foto` TEXT(1000) NULL,PRIMARY KEY (`idguestbookEntry`))", []);
+          this.db.executeSql("CREATE TABLE IF NOT EXISTS guestbookEntry(`idguestbookEntry` INTEGER PRIMARY KEY AUTOINCREMENT,`testo` TINYTEXT NULL,`foto` TEXT(1000) NULL)", []);
           console.log("CREATE opera_has_media");
           this.db.executeSql("CREATE TABLE IF NOT EXISTS opera_has_media(`opera_idopera` INT NOT NULL,`media_idmedia` INT NOT NULL,PRIMARY KEY (`opera_idopera`, `media_idmedia`))", []);
           console.log("CREATE artista_has_media");
           this.db.executeSql("CREATE TABLE IF NOT EXISTS artista_has_media(`artista_idartista` INT NOT NULL,`media_idmedia` INT NOT NULL,PRIMARY KEY (`artista_idartista`, `media_idmedia`))", []);
 
+          console.log("SEED DATABASE");
+          this.db.executeSql(databaseSeed,[]);
 
         }catch (err:any){
           alert(err)
