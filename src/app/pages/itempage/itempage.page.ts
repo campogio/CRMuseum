@@ -14,7 +14,7 @@ export class ItempagePage implements OnInit {
   loading = true;
   itemData: fullItem = {
     id: 0,
-    name: "TestMon",
+    name: "",
     roomId: 0,
     description: "",
     hasMedia: false

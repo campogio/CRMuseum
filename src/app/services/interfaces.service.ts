@@ -17,8 +17,10 @@ export interface fullItem{
   hasMedia: boolean;
 }
 
-export interface searchResults {
-  data: searchResult[];
+export interface guestEntry{
+  id: number;
+  description: string;
+  hasMedia: boolean;
 }
 
 export interface dataProvider {

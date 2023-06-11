@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 import {databaseOne, databaseThree, databaseTwo, getArt, getArtist} from "./no-encryption-utils";
-import {fullItem, searchResult, searchResults} from "./interfaces.service";
+import {fullItem, searchResult} from "./interfaces.service";
 
 @Injectable({
   providedIn: 'root'
@@ -106,7 +106,6 @@ export class SqliteService {
     }
 
     return item;
-    alert("Executed" + JSON.stringify(item))
   }
 
   test(){
