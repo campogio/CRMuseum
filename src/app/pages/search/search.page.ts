@@ -18,14 +18,19 @@ export class SearchPage implements OnInit {
 
   searchInput : string = "";
 
-  data : searchResult[];
+  artistData : searchResult[];
+  artData : searchResult[];
+
+  artistResults : searchResult[];
+  artResults : searchResult[];
 
   public results : searchResult[];
 
 
   constructor(private router: Router, sqlite: SqliteService) {
     SpeechRecognition.requestPermissions()
-    this.data= sqlite.getSearchData();
+    this.artistData= sqlite.getArtistSearchData();
+    this.artData= sqlite.getArtSearchData();
   }
 
   ngOnInit() {
@@ -53,7 +58,9 @@ export class SearchPage implements OnInit {
 
   search(event){
     const query = event.target.value.toLowerCase();
-    this.results = this.data.filter((d) => d.name.toLowerCase().includes(query));
+    this.artistResults = this.artistData.filter((d) => d.name.toLowerCase().includes(query));
+    this.artResults = this.artData.filter((d) => d.name.toLowerCase().includes(query));
+    this.results = this.artistResults.concat(this.artResults);
     console.log("LOGGING THIS: "+ JSON.stringify(this.results));
 
   }

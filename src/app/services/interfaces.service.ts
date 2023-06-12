@@ -13,6 +13,7 @@ export interface fullItem{
   id: number;
   name: string;
   roomId: number;
+  artistId: number;
   description: string;
   hasMedia: boolean;
 }

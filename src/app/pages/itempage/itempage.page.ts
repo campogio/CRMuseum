@@ -16,6 +16,7 @@ export class ItempagePage implements OnInit {
     id: 0,
     name: "",
     roomId: 0,
+    artistId: -1,
     description: "",
     hasMedia: false
   };

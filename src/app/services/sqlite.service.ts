@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
-import {databaseOne, databaseThree, databaseTwo, getArt, getArtist} from "./no-encryption-utils";
+import {
+  databaseOne,
+  databaseOneArt,
+  databaseOneRoom,
+  databaseThree,
+  databaseTwo, getAllArt, getAllArtist,
+  getArt,
+  getArtist
+} from "./no-encryption-utils";
 import {fullItem, searchResult} from "./interfaces.service";
 
 @Injectable({
@@ -10,7 +18,9 @@ export class SqliteService {
 
   db: SQLiteObject;
 
-  searchData: searchResult[] = [];
+  artistSearchData: searchResult[] = [];
+  artSearchData: searchResult[] = [];
+
 
 
   constructor(private sqlite: SQLite) {
@@ -24,11 +34,11 @@ export class SqliteService {
         console.log("CREATE artista");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS artista(`idartista` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE,`descrizione` TEXT(1000) NULL)", []);
         console.log("CREATE stanza");
-        this.db.executeSql("CREATE TABLE IF NOT EXISTS stanza(`idstanza` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NULL)", []);
+        this.db.executeSql("CREATE TABLE IF NOT EXISTS stanza(`idstanza` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE)", []);
         console.log("CREATE media");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS media(`idmedia` INTEGER PRIMARY KEY AUTOINCREMENT,`tipo` VARCHAR(45) NULL,`path` TEXT(1000) NULL)", []);
         console.log("CREATE opera");
-        this.db.executeSql("CREATE TABLE IF NOT EXISTS opera(`idopera` INTEGER PRIMARY KEY AUTOINCREMENT,`artista_idartista` INT NOT NULL,`stanza_idstanza` INT NOT NULL,`nome` VARCHAR(45) NULL,`anno` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL," +
+        this.db.executeSql("CREATE TABLE IF NOT EXISTS opera(`idopera` INTEGER PRIMARY KEY AUTOINCREMENT,`artista_idartista` INT NOT NULL,`stanza_idstanza` INT NOT NULL,`nome` VARCHAR(45) NOT NULL UNIQUE,`anno` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL," +
             "FOREIGN KEY (artista_idartista) REFERENCES artista (idartista),FOREIGN KEY (stanza_idstanza) REFERENCES stanza (idstanza))", []);
         console.log("CREATE guestbookEntry");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS guestbookEntry(`idguestbookEntry` INTEGER PRIMARY KEY AUTOINCREMENT,`testo` TINYTEXT NULL,`foto` TEXT(1000) NULL)", []);
@@ -41,6 +51,10 @@ export class SqliteService {
         this.db.executeSql(databaseOne,[]);
         this.db.executeSql(databaseTwo,[]);
         this.db.executeSql(databaseThree,[]);
+        this.db.executeSql(databaseOneRoom,[]);
+        this.db.executeSql(databaseOneArt,[]);
+
+
 
 
         this.seedSearchData();
@@ -54,22 +68,38 @@ export class SqliteService {
 
   }
 
-  public getSearchData(){
-    return this.searchData;
+  public getArtistSearchData(){
+    return this.artistSearchData;
+  }
+
+  public getArtSearchData(){
+    return this.artSearchData;
   }
 
   seedSearchData(){
-    this.db.executeSql('SELECT * FROM artista',[]).then((result)=>{
+    this.db.executeSql(getAllArtist,[]).then((result)=>{
         for (let i = 0; i<result.rows.length;i++){
-          this.searchData.push({
+          this.artistSearchData.push({
             id:result.rows.item(i).idartista,
             name:result.rows.item(i).nome,
             isArtist: true,
-            roomId: 0,
+            roomId: -1,
             description:result.rows.item(i).descrizione,
             hasPic: false
             })
         }
+    });
+    this.db.executeSql(getAllArt,[]).then((result)=>{
+      for (let i = 0; i<result.rows.length;i++){
+        this.artSearchData.push({
+          id:result.rows.item(i).idopera,
+          name:result.rows.item(i).nome,
+          isArtist: false,
+          roomId: result.rows.item(i).stanza_idstanza,
+          description:result.rows.item(i).descrizione,
+          hasPic: false
+        })
+      }
     });
   }
 
@@ -79,16 +109,20 @@ export class SqliteService {
       id: 0,
       name: "TestMon",
       roomId: 0,
+      artistId: -1,
       description: "",
       hasMedia: false
     };
 
-    if(isArtist){
+    console.log("IS ARTIST IS: "+isArtist)
+
+    if(isArtist == true){
       await this.db.executeSql(getArtist,[id]).then((result)=>{
         item={
           id: result.rows.item(0).idartista,
           name: result.rows.item(0).nome,
           roomId: 0,
+          artistId: -1,
           description: result.rows.item(0).descrizione,
           hasMedia: false
         }
@@ -98,7 +132,8 @@ export class SqliteService {
          item={
           id: result.rows.item(0).idopera,
           name: result.rows.item(0).nome,
-          roomId: 0,
+          roomId: result.rows.item(0).stanza_idstanza,
+           artistId: result.rows.item(0).artista_idartista,
           description: result.rows.item(0).descrizione,
           hasMedia: false
         }
