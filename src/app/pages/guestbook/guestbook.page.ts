@@ -46,7 +46,6 @@ export class GuestbookPage implements OnInit {
   getEntries(event){
 
     this.addEntries(this.entries.length);
-    alert("Index is: " + (this.entries.length-1));
 
     setTimeout(() => {
       (event as InfiniteScrollCustomEvent).target.complete();

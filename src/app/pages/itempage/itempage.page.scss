@@ -1,0 +1,28 @@
+.footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.slider-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.3s ease;
+  transform: translateX(0);
+}
+
+.slider div {
+  flex: 0 0 100%;
+}
+
+.slider img {
+  width: 100%;
+  height: auto;
+}

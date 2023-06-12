@@ -12,6 +12,17 @@ export class ItempagePage implements OnInit {
 
   constructor(private router :Router, private route: ActivatedRoute, private sqlite: SqliteService) { }
   loading = true;
+
+  media = [
+    { image: '/assets/instagram.jpg', alt: 'Image 1' },
+    { image: '/assets/instagram.png', alt: 'Image 2' },
+    { image: '/assets/instagram.jpg', alt: 'Image 3' }
+  ];
+
+  slideOffset = 0;
+  slideWidth = 0;
+  currentSlide = 0;
+
   itemData: fullItem = {
     id: 0,
     name: "",
@@ -22,6 +33,7 @@ export class ItempagePage implements OnInit {
   };
 
    ngOnInit() {
+     this.slideWidth = document.querySelector('.slider-container')?.clientWidth || 0;
      this.loading=true;
     const isArtist = this.route.snapshot.paramMap.get("isArtist");
     const id = this.route.snapshot.paramMap.get("id");
@@ -46,5 +58,11 @@ export class ItempagePage implements OnInit {
 
 
   }
+
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.media.length;
+    this.slideOffset = -this.slideWidth * this.currentSlide;
+  }
+
 
 }
