@@ -32,13 +32,13 @@ export class SqliteService {
       }).then((db: SQLiteObject) => {
         this.db= db;
         console.log("CREATE artista");
-        this.db.executeSql("CREATE TABLE IF NOT EXISTS artista(`idartista` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE,`descrizione` TEXT(1000) NULL)", []);
+        this.db.executeSql("CREATE TABLE IF NOT EXISTS artista(`idartista` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE,`descrizione` TEXT(1000) NULL, 'thumbnail_media_path' TEXT(1000) NULL)", []);
         console.log("CREATE stanza");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS stanza(`idstanza` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE)", []);
         console.log("CREATE media");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS media(`idmedia` INTEGER PRIMARY KEY AUTOINCREMENT,`tipo` VARCHAR(45) NULL,`path` TEXT(1000) NULL)", []);
         console.log("CREATE opera");
-        this.db.executeSql("CREATE TABLE IF NOT EXISTS opera(`idopera` INTEGER PRIMARY KEY AUTOINCREMENT,`artista_idartista` INT NOT NULL,`stanza_idstanza` INT NOT NULL,`nome` VARCHAR(45) NOT NULL UNIQUE,`anno` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL," +
+        this.db.executeSql("CREATE TABLE IF NOT EXISTS opera(`idopera` INTEGER PRIMARY KEY AUTOINCREMENT,`artista_idartista` INT NOT NULL,`stanza_idstanza` INT NOT NULL,`nome` VARCHAR(45) NOT NULL UNIQUE,`anno` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL, 'thumbnail_media_path' TEXT(1000) NULL," +
             "FOREIGN KEY (artista_idartista) REFERENCES artista (idartista),FOREIGN KEY (stanza_idstanza) REFERENCES stanza (idstanza))", []);
         console.log("CREATE guestbookEntry");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS guestbookEntry(`idguestbookEntry` INTEGER PRIMARY KEY AUTOINCREMENT,`testo` TINYTEXT NULL,`foto` TEXT(1000) NULL)", []);
@@ -82,28 +82,33 @@ export class SqliteService {
           this.artistSearchData.push({
             id:result.rows.item(i).idartista,
             name:result.rows.item(i).nome,
-            isArtist: true,
+            isArtist: 1,
             roomId: -1,
             description:result.rows.item(i).descrizione,
-            hasPic: false
-            })
+            thumbnailPath: result.rows.item(i).thumbnail_media_path,
+          })
         }
     });
     this.db.executeSql(getAllArt,[]).then((result)=>{
       for (let i = 0; i<result.rows.length;i++){
+
+        console.log(result.rows.item(i).thumbnail_media_path)
+        console.log(result.rows.item(i).thumbnail_media_path != null)
+
         this.artSearchData.push({
           id:result.rows.item(i).idopera,
           name:result.rows.item(i).nome,
-          isArtist: false,
+          isArtist: 0,
           roomId: result.rows.item(i).stanza_idstanza,
           description:result.rows.item(i).descrizione,
-          hasPic: false
+          thumbnailPath: result.rows.item(i).thumbnail_media_path,
         })
       }
     });
   }
 
-  public async getFullItem(isArtist:boolean,id:number): Promise<fullItem> {
+  public async getFullItem(isArtist:number,id:number): Promise<fullItem> {
+
 
     let item: fullItem = {
       id: 0,
@@ -114,9 +119,15 @@ export class SqliteService {
       hasMedia: false
     };
 
-    console.log("IS ARTIST IS: "+isArtist)
+    alert("Artist is: "+ isArtist)
 
-    if(isArtist == true){
+    if(isArtist==1){
+      alert("Artist is true")
+    }else {
+      alert("Artist is false")
+    }
+
+    if(isArtist==1){
       await this.db.executeSql(getArtist,[id]).then((result)=>{
         item={
           id: result.rows.item(0).idartista,

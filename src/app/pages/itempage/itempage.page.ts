@@ -26,15 +26,15 @@ export class ItempagePage implements OnInit {
     const isArtist = this.route.snapshot.paramMap.get("isArtist");
     const id = this.route.snapshot.paramMap.get("id");
 
-    console.log("1:" + isArtist)
+    alert("1:" + isArtist)
     console.log("2:" + id)
 
     if (typeof isArtist === "string" && typeof id == "string") {
 
-      const artParsed = isArtist as unknown as boolean;
+      const artParsed = isArtist as unknown as number;
       const idParsed = id as unknown as number
 
-      console.log("Parsed 1:" + artParsed)
+      alert("Parsed 1:" + artParsed)
       console.log("Parsed 2:" + idParsed)
 
       this.sqlite.getFullItem(artParsed, idParsed).then((item) =>{this.itemData=item});

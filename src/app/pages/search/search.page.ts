@@ -67,7 +67,7 @@ export class SearchPage implements OnInit {
   askUser(){
     this.prepare();
 
-    const c = confirm('Do you want to scan a barcode?');
+    const c = confirm('Do you want to scan a QR Code?');
 
     if (c) {
       this.startScan();
@@ -76,7 +76,7 @@ export class SearchPage implements OnInit {
     }
   };
 
-  gotoItemPage(isArtist:boolean,id:number){
+  gotoItemPage(isArtist:number,id:number){
       this.router.navigate(['itempage',isArtist,id])
   }
 

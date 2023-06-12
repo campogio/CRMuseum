@@ -3,10 +3,10 @@
 export interface searchResult {
   id: number;
   name: string;
-  isArtist: boolean;
+  isArtist: number;
   roomId: number;
   description: string;
-  hasPic: boolean;
+  thumbnailPath: string;
 }
 
 export interface fullItem{
