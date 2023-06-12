@@ -25,7 +25,7 @@ export class HomePage {
   }
 
   gotoGuestBook() {
-    this.sqlite.test();
+    //this.sqlite.test();
     this.router.navigate(['guestbook'])
   }
 }

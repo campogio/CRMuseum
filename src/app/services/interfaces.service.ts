@@ -9,6 +9,11 @@ export interface searchResult {
   thumbnailPath: string;
 }
 
+export interface room{
+  id:number,
+  name: string
+}
+
 export interface fullItem{
   id: number;
   name: string;

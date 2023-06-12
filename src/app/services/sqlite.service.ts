@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 import {
+  databaseEightEntry,
+  databaseFiveEntry,
+  databaseFourEntry,
   databaseOne,
-  databaseOneArt,
-  databaseOneRoom,
-  databaseThree,
-  databaseTwo, getAllArt, getAllArtist,
+  databaseOneArt, databaseOneEntry,
+  databaseOneRoom, databaseSevenEntry, databaseSixEntry,
+  databaseThree, databaseThreeEntry,
+  databaseTwo, databaseTwoEntry, getAllArt, getAllArtist, getAllRooms,
   getArt,
-  getArtist
+  getArtist, getEntries
 } from "./no-encryption-utils";
-import {fullItem, searchResult} from "./interfaces.service";
+import {fullItem, guestEntry, room, searchResult} from "./interfaces.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +23,7 @@ export class SqliteService {
 
   artistSearchData: searchResult[] = [];
   artSearchData: searchResult[] = [];
+  roomsData: room[]= []
 
 
 
@@ -54,9 +58,17 @@ export class SqliteService {
         this.db.executeSql(databaseOneRoom,[]);
         this.db.executeSql(databaseOneArt,[]);
 
+        this.db.executeSql(databaseOneEntry,[]);
+        this.db.executeSql(databaseTwoEntry,[]);
+        this.db.executeSql(databaseThreeEntry,[]);
+        this.db.executeSql(databaseFourEntry,[]);
+        this.db.executeSql(databaseFiveEntry,[]);
+        this.db.executeSql(databaseSixEntry,[]);
+        this.db.executeSql(databaseSevenEntry,[]);
+        this.db.executeSql(databaseEightEntry,[]);
 
 
-
+        this.seedRoomData();
         this.seedSearchData();
 
       }).catch(e => console.log(JSON.stringify(e)));
@@ -75,6 +87,17 @@ export class SqliteService {
   public getArtSearchData(){
     return this.artSearchData;
   }
+
+  seedRoomData(){
+    this.db.executeSql(getAllRooms,[]).then((result)=>{
+      for (let i = 0; i<result.rows.length;i++){
+        this.roomsData.push({
+          id:result.rows.item(i).idstanza,
+          name:result.rows.item(i).nome,
+        })
+      }
+      })
+    }
 
   seedSearchData(){
     this.db.executeSql(getAllArtist,[]).then((result)=>{
@@ -107,25 +130,36 @@ export class SqliteService {
     });
   }
 
+  public async getEntries(startIndex:number): Promise<guestEntry[]>{
+    let entries: guestEntry[]= [];
+
+    await this.db.executeSql(getEntries,[startIndex,startIndex+4]).then((result)=>{
+      for (let i = 0; i<result.rows.length;i++){
+        entries.push(
+          {
+            id: result.rows.item(i).idguestbookEntry,
+            description: result.rows.item(i).testo,
+            hasMedia: false,
+          }
+        )
+      }
+
+      })
+    return entries;
+
+    }
+
   public async getFullItem(isArtist:number,id:number): Promise<fullItem> {
 
 
     let item: fullItem = {
       id: 0,
-      name: "TestMon",
+      name: "",
       roomId: 0,
       artistId: -1,
       description: "",
       hasMedia: false
     };
-
-    alert("Artist is: "+ isArtist)
-
-    if(isArtist==1){
-      alert("Artist is true")
-    }else {
-      alert("Artist is false")
-    }
 
     if(isArtist==1){
       await this.db.executeSql(getArtist,[id]).then((result)=>{

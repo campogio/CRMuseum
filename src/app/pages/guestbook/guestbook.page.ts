@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {guestEntry} from "../../services/interfaces.service";
 import {Router} from "@angular/router";
+import {InfiniteScrollCustomEvent} from "@ionic/angular";
+import {SqliteService} from "../../services/sqlite.service";
 
 @Component({
   selector: 'app-guestbook',
@@ -9,11 +11,47 @@ import {Router} from "@angular/router";
 })
 export class GuestbookPage implements OnInit {
 
-  entries : guestEntry[];
+  entries : guestEntry[] = [];
+  allLoaded = false;
 
-  constructor(private router:Router) { }
+  constructor(private router:Router, private sqlite: SqliteService) {
+
+    this.addEntries(0)
+
+  }
 
   ngOnInit() {
+
+  }
+
+  addEntries(index: number){
+
+    let newEntries: guestEntry[] = [];
+
+    this.sqlite.getEntries(index).then((result)=>{
+      newEntries = newEntries.concat(result);
+
+      if(result.length < 1){
+        this.allLoaded = true;
+      }else {
+        this.entries= this.entries.concat(newEntries)
+      }
+
+    });
+
+
+
+  }
+
+  getEntries(event){
+
+    this.addEntries(this.entries.length);
+    alert("Index is: " + (this.entries.length-1));
+
+    setTimeout(() => {
+      (event as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+
   }
 
   gotoAddComment(){
