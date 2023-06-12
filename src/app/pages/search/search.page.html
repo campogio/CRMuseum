@@ -9,7 +9,10 @@
     <ion-item *ngFor="let result of results">
       <ion-card class="searchResult" (click)="gotoItemPage(result.isArtist,result.id)">
         <ion-card-title>{{result.name}}</ion-card-title>
-        {{result.description}}
+        <ion-card-content [ngClass]="{'halfWidth': (result.thumbnailPath != null)}">{{result.description}}</ion-card-content>
+        <br>
+        <ion-img *ngIf="result.thumbnailPath != null" class="picture halfWidth" src={{result.thumbnailPath}}></ion-img>
+
 
       </ion-card>
     </ion-item>
