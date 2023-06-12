@@ -28,7 +28,6 @@ export class SearchPage implements OnInit {
 
 
   constructor(private router: Router, sqlite: SqliteService) {
-    SpeechRecognition.requestPermissions()
     this.artistData= sqlite.getArtistSearchData();
     this.artData= sqlite.getArtSearchData();
   }
