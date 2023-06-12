@@ -45,8 +45,8 @@ export class SearchPage implements OnInit {
     document.querySelector('body')!.classList.add('scanner-active');
     const result = await BarcodeScanner.startScan();
     if (result.hasContent) {
-      console.log(result.content);
       this.stopScan();
+      this.router.navigate(['itempage',0,result.content])
     }
   };
 
