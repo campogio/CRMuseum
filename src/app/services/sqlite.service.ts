@@ -33,13 +33,13 @@ import {
   newGuestbookEntry,
   newGuestbookEntryMedia
 } from "./no-encryption-utils";
-import {fullItem, guestEntry, media, room, searchResult} from "./interfaces.service";
+import {dataProvider, fullItem, guestEntry, media, room, searchResult} from "./interfaces.service";
 import {async, asyncScheduler} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class SqliteService {
+export class SqliteService implements dataProvider{
 
   db: SQLiteObject;
 

@@ -43,6 +43,10 @@ export interface guestEntry{
 
 export interface dataProvider {
 
-  getItem(isArtist: boolean,id:number): fullItem;
+  getFullItem(isArtist: number,id:number): Promise<fullItem>;
+  getEntries(startIndex:number): Promise<guestEntry[]>;
+  getMediaForItem(isArtist:number,id:number): Promise<media[]>;
+  newComment(entry: guestEntry);
+
 
 }
