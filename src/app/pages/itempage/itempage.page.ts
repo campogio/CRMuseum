@@ -22,7 +22,8 @@ export class ItempagePage implements OnInit {
   itemData: fullItem = {
     id: 0,
     name: "",
-    roomId: 0,
+    roomId: -1,
+    roomName: '',
     artistId: -1,
     description: "",
     hasMedia: false
@@ -43,7 +44,6 @@ export class ItempagePage implements OnInit {
       this.sqlite.getFullItem(artParsed, idParsed).then((item) =>{this.itemData=item});
       this.sqlite.getMediaForItem(artParsed,idParsed).then((result) =>{this.media=result})
       this.loading= false;
-
     } else {
       alert("Error in item parsing")
     }

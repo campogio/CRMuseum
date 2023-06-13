@@ -30,9 +30,13 @@
   src: url("assets/Fonts/Roboto-Light.ttf");
 }
 
+.whiteText{
+  --ion-text-color: white;
+}
+
 :root{
-  --ion-background-color: #999999;
-  --ion-color-secondary: #777777;
+  --ion-background-color: #111111;
+  --ion-color-secondary: #424242;
   --ion-font-family: 'AppFont';
 }
 

@@ -1,17 +1,37 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 import {
-  databaseArtMediaOne, databaseArtMediaThree, databaseArtMediaTwo,
+  databaseArtMediaOne,
+  databaseArtMediaThree,
+  databaseArtMediaTwo,
   databaseEightEntry,
   databaseFiveEntry,
-  databaseFourEntry, databaseMediaOne, databaseMediaThree, databaseMediaTwo,
+  databaseFourEntry,
+  databaseMediaOne,
+  databaseMediaThree,
+  databaseMediaTwo,
   databaseOne,
-  databaseOneArt, databaseOneEntry,
-  databaseOneRoom, databaseSevenEntry, databaseSixEntry,
-  databaseThree, databaseThreeEntry,
-  databaseTwo, databaseTwoEntry, getAllArt, getAllArtist, getAllRooms,
+  databaseOneArt,
+  databaseOneEntry,
+  databaseOneRoom,
+  databaseSevenEntry,
+  databaseSixEntry,
+  databaseThree,
+  databaseThreeEntry,
+  databaseTwo,
+  databaseTwoEntry,
+  getAllArt,
+  getAllArtist,
+  getAllRooms,
   getArt,
-  getArtist, getArtistMediaIds, getArtMediaIds, getEntries, getMediaById, newGuestbookEntry, newGuestbookEntryMedia
+  getArtist,
+  getArtistMediaIds,
+  getArtMediaIds,
+  getEntries,
+  getMediaById,
+  getRoom,
+  newGuestbookEntry,
+  newGuestbookEntryMedia
 } from "./no-encryption-utils";
 import {fullItem, guestEntry, media, room, searchResult} from "./interfaces.service";
 import {async, asyncScheduler} from "rxjs";
@@ -181,7 +201,6 @@ export class SqliteService {
         }
       })
     }
-    alert(JSON.stringify(medias))
     return medias;
 
   }
@@ -224,7 +243,8 @@ export class SqliteService {
     let item: fullItem = {
       id: 0,
       name: "",
-      roomId: 0,
+      roomId: -1,
+      roomName: '',
       artistId: -1,
       description: "",
       hasMedia: false
@@ -235,19 +255,27 @@ export class SqliteService {
         item={
           id: result.rows.item(0).idartista,
           name: result.rows.item(0).nome,
-          roomId: 0,
+          roomId: -1,
+          roomName: '',
           artistId: -1,
           description: result.rows.item(0).descrizione,
           hasMedia: false
         }
       });
     }else {
-      await this.db.executeSql(getArt,[id]).then((result)=>{
-         item={
+      await this.db.executeSql(getArt,[id]).then(async (result) => {
+
+        let stanzaName: string = ''
+
+        if (result.rows.item(0).stanza_idstanza > -1) {
+          await this.db.executeSql(getRoom,[result.rows.item(0).stanza_idstanza]).then((res) =>{stanzaName = res.rows.item(0).nome;})
+        }
+        item = {
           id: result.rows.item(0).idopera,
           name: result.rows.item(0).nome,
           roomId: result.rows.item(0).stanza_idstanza,
-           artistId: result.rows.item(0).artista_idartista,
+          roomName: stanzaName,
+          artistId: result.rows.item(0).artista_idartista,
           description: result.rows.item(0).descrizione,
           hasMedia: false
         }
@@ -256,10 +284,5 @@ export class SqliteService {
 
     return item;
   }
-
-  test(){
-    this.db.executeSql('SELECT * FROM artista',[]).then((result)=>{ alert(result.rows.length + ' Lines found') });
-  }
-
 
 }

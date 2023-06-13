@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list >
     <ion-item *ngFor="let entry of entries">
-      <ion-card class="searchResult">
+      <ion-card color="secondary" class="searchResult whiteText">
         <ion-card-content [ngClass]="{'halfWidth': (entry.mediaPath !== '')}">
           {{entry.description}}
         </ion-card-content>

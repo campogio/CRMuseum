@@ -7,16 +7,16 @@
 <ng-template #Elseblock>
   <ion-header [translucent]="true">
     <ion-toolbar>
-      <ion-title>{{itemData.name}}</ion-title>
+      <ion-title class="whiteText">{{itemData.name}} <br> <div *ngIf="itemData.roomName !== ''"> {{itemData.roomName}} </div> </ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content [fullscreen]="true">
+  <ion-content class="whiteText" [fullscreen]="true">
     {{itemData.description}}
 
     <ion-item *ngIf="media.length>0" class="footer">
       <div class="slider-container">
-        <ion-card-header> MEDIA </ion-card-header>
+        <ion-card-header class="whiteText"> MEDIA </ion-card-header>
         <div class="slider" [style.transform]="'translateX(' + (-currentSlide * 100) + '%)'">
           <div *ngFor="let image of media">
             <img [src]=image.path alt="Slider Image">

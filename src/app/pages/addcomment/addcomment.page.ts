@@ -47,8 +47,6 @@ export class AddcommentPage implements OnInit {
       }
     }
 
-    alert(JSON.stringify(newEntry))
-
     this.sqlite.newComment(newEntry)
     this.router.navigate(['guestbook'])
 
