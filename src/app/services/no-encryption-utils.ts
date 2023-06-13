@@ -9,10 +9,10 @@ export const databaseOneArt: string = "INSERT INTO opera VALUES(0,0,0,'La Pietà
 
 export const databaseOneEntry: string = "INSERT INTO guestbookEntry VALUES(0,'Questa è la prima entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 export const databaseTwoEntry: string = "INSERT INTO guestbookEntry VALUES(1,'Questa è la seconda entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
-export const databaseThreeEntry: string = "INSERT INTO guestbookEntry VALUES(2,'Questa è la terza entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
+export const databaseThreeEntry: string = "INSERT INTO guestbookEntry VALUES(2,'Questa è la terza entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat','/assets/instagram.png');"
 export const databaseFourEntry: string = "INSERT INTO guestbookEntry VALUES(3,'Questa è la quarta entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 export const databaseFiveEntry: string = "INSERT INTO guestbookEntry VALUES(4,'Questa è la quinta entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
-export const databaseSixEntry: string = "INSERT INTO guestbookEntry VALUES(5,'Questa è la sesta entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
+export const databaseSixEntry: string = "INSERT INTO guestbookEntry VALUES(5,'Questa è la sesta entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat','/assets/media/pieta-01.jpg');"
 export const databaseSevenEntry: string = "INSERT INTO guestbookEntry VALUES(6,'Questa è la settima entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 export const databaseEightEntry: string = "INSERT INTO guestbookEntry VALUES(7,'Questa è la ottava entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 
@@ -38,4 +38,8 @@ export const getAllRooms: string= "SELECT * FROM stanza;"
 export const getArtist: string = "SELECT * FROM artista WHERE idartista = ?;"
 export const getArt: string = "SELECT * FROM opera WHERE idopera = ?;"
 export const getEntries: string= "SELECT * FROM guestbookEntry WHERE idguestbookEntry BETWEEN ? AND ?"
+
+export const newGuestbookEntry: string = "INSERT INTO guestbookEntry(testo,foto) VALUES(?,NULL)"
+export const newGuestbookEntryMedia: string = "INSERT INTO guestbookEntry(testo,foto) VALUES(?,?)"
+
 

@@ -31,6 +31,8 @@ export class GuestbookPage implements OnInit {
     this.sqlite.getEntries(index).then((result)=>{
       newEntries = newEntries.concat(result);
 
+      alert("New Entries: "+ JSON.stringify(newEntries))
+
       if(result.length < 1){
         this.allLoaded = true;
       }else {

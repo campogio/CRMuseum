@@ -5,8 +5,13 @@
 </ion-header>
 
 <ion-content>
-      <ion-textarea style="height: 150px" label="Text" labelPlacement="floating" [counter]="true" maxlength="255"></ion-textarea>
+      <ion-textarea [(ngModel)]="text" style="height: 150px" label="Text" labelPlacement="floating" [counter]="true" maxlength="255"></ion-textarea>
 </ion-content>
+
+<ion-content *ngIf=" pictureToAdd.webviewPath !== ''">
+  <img [src]=pictureToAdd.webviewPath>
+</ion-content>
+
 <ion-content>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="addPhotoToGallery()">
@@ -14,3 +19,7 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+  <ion-toolbar>
+    <ion-button color="secondary" (click)="postComment()">Post comment</ion-button>
+  </ion-toolbar>

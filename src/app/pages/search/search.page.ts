@@ -60,8 +60,6 @@ export class SearchPage implements OnInit {
     this.artistResults = this.artistData.filter((d) => d.name.toLowerCase().includes(query));
     this.artResults = this.artData.filter((d) => d.name.toLowerCase().includes(query));
     this.results = this.artistResults.concat(this.artResults);
-    console.log("LOGGING THIS: "+ JSON.stringify(this.results));
-
   }
   askUser(){
     this.prepare();

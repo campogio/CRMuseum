@@ -23,6 +23,11 @@ export interface fullItem{
   hasMedia: boolean;
 }
 
+export interface UserPhoto {
+  filepath: string;
+  webviewPath?: string;
+}
+
 export interface media{
   id:number;
   path: string;
@@ -32,6 +37,7 @@ export interface guestEntry{
   id: number;
   description: string;
   hasMedia: boolean;
+  mediaPath: string;
 }
 
 export interface dataProvider {

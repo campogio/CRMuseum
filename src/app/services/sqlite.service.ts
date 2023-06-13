@@ -11,7 +11,7 @@ import {
   databaseThree, databaseThreeEntry,
   databaseTwo, databaseTwoEntry, getAllArt, getAllArtist, getAllRooms,
   getArt,
-  getArtist, getArtistMediaIds, getArtMediaIds, getEntries, getMediaById
+  getArtist, getArtistMediaIds, getArtMediaIds, getEntries, getMediaById, newGuestbookEntry, newGuestbookEntryMedia
 } from "./no-encryption-utils";
 import {fullItem, guestEntry, media, room, searchResult} from "./interfaces.service";
 import {async, asyncScheduler} from "rxjs";
@@ -42,7 +42,7 @@ export class SqliteService {
         console.log("CREATE stanza");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS stanza(`idstanza` INTEGER PRIMARY KEY AUTOINCREMENT,`nome` VARCHAR(45) NOT NULL UNIQUE)", []);
         console.log("CREATE media");
-        this.db.executeSql("CREATE TABLE IF NOT EXISTS media(`idmedia` INTEGER PRIMARY KEY AUTOINCREMENT,`tipo` VARCHAR(45) NULL,`path` TEXT(1000) NULL)", []);
+        this.db.executeSql("CREATE TABLE IF NOT EXISTS media(`idmedia` INTEGER PRIMARY KEY,`tipo` VARCHAR(45) NULL,`path` TEXT(1000) NULL)", []);
         console.log("CREATE opera");
         this.db.executeSql("CREATE TABLE IF NOT EXISTS opera(`idopera` INTEGER PRIMARY KEY AUTOINCREMENT,`artista_idartista` INT NOT NULL,`stanza_idstanza` INT NOT NULL,`nome` VARCHAR(45) NOT NULL UNIQUE,`anno` VARCHAR(45) NULL,`descrizione` TEXT(1000) NULL, 'thumbnail_media_path' TEXT(1000) NULL," +
             "FOREIGN KEY (artista_idartista) REFERENCES artista (idartista),FOREIGN KEY (stanza_idstanza) REFERENCES stanza (idstanza))", []);
@@ -139,6 +139,17 @@ export class SqliteService {
     });
   }
 
+  public async newComment(entry: guestEntry){
+
+
+    if( entry.mediaPath!= ''){
+      await this.db.executeSql(newGuestbookEntryMedia,[entry.description,entry.mediaPath])
+    }else {
+      await this.db.executeSql(newGuestbookEntry,[entry.description])
+    }
+
+  }
+
   public async getMediaForItem(isArtist:number,id:number): Promise<media[]>{
     let medias: media[] = [];
 
@@ -180,13 +191,26 @@ export class SqliteService {
 
     await this.db.executeSql(getEntries,[startIndex,startIndex+4]).then((result)=>{
       for (let i = 0; i<result.rows.length;i++){
-        entries.push(
-          {
-            id: result.rows.item(i).idguestbookEntry,
-            description: result.rows.item(i).testo,
-            hasMedia: false,
-          }
-        )
+        if(result.rows.item(i).foto == null){
+          entries.push(
+            {
+              id: result.rows.item(i).idguestbookEntry,
+              description: result.rows.item(i).testo,
+              hasMedia: false,
+              mediaPath: ""
+            }
+          )
+        }else {
+          entries.push(
+            {
+              id: result.rows.item(i).idguestbookEntry,
+              description: result.rows.item(i).testo,
+              hasMedia: true,
+              mediaPath: result.rows.item(i).foto
+            }
+          )
+        }
+
       }
 
       })
