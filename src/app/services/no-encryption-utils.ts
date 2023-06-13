@@ -5,7 +5,7 @@ export const databaseTwo: string  ="INSERT INTO artista VALUES(1,'Van Gogh','Vin
 export const databaseThree: string  ="INSERT INTO artista VALUES(2,'Claude Monet','Pittore dell’ottocento è considerato il padre fondatore di uno dei maggiori movimenti artistici: l’impressionismo.',NULL);"
 
 export const databaseOneRoom: string = "INSERT INTO stanza VALUES(0,'Stanza Del Rinascimento');"
-export const databaseOneArt: string = "INSERT INTO opera VALUES(0,0,0,'La Pietà','1498–1499','La Pietà di San Pietro è una scultura in marmo realizzata da Michelangelo Buonarroti e conservata nella basilica di San Pietro in Vaticano.',NULL);"
+export const databaseOneArt: string = "INSERT INTO opera VALUES(0,0,0,'La Pietà','1498–1499','La Pietà di San Pietro è una scultura in marmo realizzata da Michelangelo Buonarroti e conservata nella basilica di San Pietro in Vaticano.','/assets/media/pieta-01.jpg');"
 
 export const databaseOneEntry: string = "INSERT INTO guestbookEntry VALUES(0,'Questa è la prima entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 export const databaseTwoEntry: string = "INSERT INTO guestbookEntry VALUES(1,'Questa è la seconda entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
@@ -16,6 +16,18 @@ export const databaseSixEntry: string = "INSERT INTO guestbookEntry VALUES(5,'Qu
 export const databaseSevenEntry: string = "INSERT INTO guestbookEntry VALUES(6,'Questa è la settima entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 export const databaseEightEntry: string = "INSERT INTO guestbookEntry VALUES(7,'Questa è la ottava entry nel guestbook, Lorem Ipsum Sim cum facit adhoram mestat',NULL);"
 
+export const databaseMediaOne: string = "INSERT INTO media VALUES (0,'jpg','/assets/media/pieta-01.jpg')"
+export const databaseMediaTwo: string = "INSERT INTO media VALUES (1,'jpg','/assets/media/pieta-02.jpg')"
+export const databaseMediaThree: string = "INSERT INTO media VALUES (2,'jpg','/assets/media/pieta-03.jpg')"
+
+export const databaseArtMediaOne: string = "INSERT INTO opera_has_media VALUES(0,0)"
+export const databaseArtMediaTwo: string = "INSERT INTO opera_has_media VALUES(0,1)"
+export const databaseArtMediaThree: string = "INSERT INTO opera_has_media VALUES(0,2)"
+
+
+export const getArtistMediaIds: string = "SELECT * FROM artista_has_media WHERE artista_idartista = ?;"
+export const getArtMediaIds: string = "SELECT * FROM opera_has_media WHERE opera_idopera = ?;"
+export const getMediaById: string = "SELECT * FROM media WHERE idmedia = ?"
 
 
 export const getAllArtist: string = "SELECT * FROM artista;"

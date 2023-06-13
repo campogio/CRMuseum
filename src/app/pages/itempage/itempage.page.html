@@ -14,16 +14,18 @@
   <ion-content [fullscreen]="true">
     {{itemData.description}}
 
-    <ion-item class="footer">
+    <ion-item *ngIf="media.length>0" class="footer">
       <div class="slider-container">
+        <ion-card-header> MEDIA </ion-card-header>
         <div class="slider" [style.transform]="'translateX(' + (-currentSlide * 100) + '%)'">
           <div *ngFor="let image of media">
-            <img [src]=image.image alt="Slider Image">
+            <img [src]=image.path alt="Slider Image">
           </div>
         </div>
+        <ion-button (click)="nextSlide()">Next</ion-button>
+
       </div>
 
-      <ion-button (click)="nextSlide()">Next</ion-button>
 
     </ion-item>
 

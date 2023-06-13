@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 import {
+  databaseArtMediaOne, databaseArtMediaThree, databaseArtMediaTwo,
   databaseEightEntry,
   databaseFiveEntry,
-  databaseFourEntry,
+  databaseFourEntry, databaseMediaOne, databaseMediaThree, databaseMediaTwo,
   databaseOne,
   databaseOneArt, databaseOneEntry,
   databaseOneRoom, databaseSevenEntry, databaseSixEntry,
   databaseThree, databaseThreeEntry,
   databaseTwo, databaseTwoEntry, getAllArt, getAllArtist, getAllRooms,
   getArt,
-  getArtist, getEntries
+  getArtist, getArtistMediaIds, getArtMediaIds, getEntries, getMediaById
 } from "./no-encryption-utils";
-import {fullItem, guestEntry, room, searchResult} from "./interfaces.service";
+import {fullItem, guestEntry, media, room, searchResult} from "./interfaces.service";
+import {async, asyncScheduler} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +69,13 @@ export class SqliteService {
         this.db.executeSql(databaseSevenEntry,[]);
         this.db.executeSql(databaseEightEntry,[]);
 
+        this.db.executeSql(databaseMediaOne,[]);
+        this.db.executeSql(databaseMediaTwo,[]);
+        this.db.executeSql(databaseMediaThree,[]);
+
+        this.db.executeSql(databaseArtMediaOne,[]);
+        this.db.executeSql(databaseArtMediaTwo,[]);
+        this.db.executeSql(databaseArtMediaThree,[]);
 
         this.seedRoomData();
         this.seedSearchData();
@@ -128,6 +137,42 @@ export class SqliteService {
         })
       }
     });
+  }
+
+  public async getMediaForItem(isArtist:number,id:number): Promise<media[]>{
+    let medias: media[] = [];
+
+    if(isArtist == 1){
+      await this.db.executeSql(getArtistMediaIds,[id]).then(async (result) => {
+        //TODO Make this parallel with Promise.all
+        for (let i = 0; i < result.rows.length; i++) {
+          await this.db.executeSql(getMediaById,[result.rows.item(i).media_idmedia]).then((media)=>{
+            for (let i = 0; i < media.rows.length; i++) {
+              medias.push({
+                id: media.idmedia,
+                path: media.path
+              })
+            }
+            })
+        }
+      })
+      }else {
+      await this.db.executeSql(getArtMediaIds,[id]).then(async (result) => {
+        for (let i = 0; i < result.rows.length; i++) {
+          await this.db.executeSql(getMediaById, [result.rows.item(i).media_idmedia]).then((media) => {
+            for (let i = 0; i < media.rows.length; i++) {
+              medias.push({
+                id: media.rows.item(i).id,
+                path: media.rows.item(i).path
+              })
+            }
+          })
+        }
+      })
+    }
+    alert(JSON.stringify(medias))
+    return medias;
+
   }
 
   public async getEntries(startIndex:number): Promise<guestEntry[]>{

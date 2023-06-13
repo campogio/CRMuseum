@@ -23,6 +23,11 @@ export interface fullItem{
   hasMedia: boolean;
 }
 
+export interface media{
+  id:number;
+  path: string;
+}
+
 export interface guestEntry{
   id: number;
   description: string;
