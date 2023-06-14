@@ -53,10 +53,6 @@ export class SqliteService implements dataProvider{
   constructor(private sqlite: SQLite) {
 
     try {
-      this.sqlite.deleteDatabase({
-        name: 'mydb',
-        location: 'default'
-      })
       this.sqlite.create({
         name: 'mydb',
         location: 'default'
