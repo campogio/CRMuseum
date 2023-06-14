@@ -5,6 +5,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import {Router} from "@angular/router";
 import {SqliteService} from "../../services/sqlite.service";
 import {searchResult} from "../../services/interfaces.service";
+import {Platform} from "@ionic/angular";
 
 @Component({
   selector: 'app-search',
@@ -27,9 +28,10 @@ export class SearchPage implements OnInit {
   public results : searchResult[];
 
 
-  constructor(private router: Router, sqlite: SqliteService) {
+  constructor(private router: Router, sqlite: SqliteService,private platform: Platform) {
     this.artistData= sqlite.getArtistSearchData();
     this.artData= sqlite.getArtSearchData();
+
   }
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class SearchPage implements OnInit {
   };
 
   async startScan(){
+    this.results = []
     BarcodeScanner.hideBackground();
     document.querySelector('body')!.classList.add('scanner-active');
     const result = await BarcodeScanner.startScan();
@@ -49,7 +52,7 @@ export class SearchPage implements OnInit {
     }
   };
 
-  stopScan = () => {
+  public stopScan = () => {
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
     document.querySelector('body')!.classList.remove('scanner-active');
@@ -74,7 +77,8 @@ export class SearchPage implements OnInit {
   };
 
   gotoItemPage(isArtist:number,id:number){
-      this.router.navigate(['itempage',isArtist,id])
+    this.stopScan();
+    this.router.navigate(['itempage',isArtist,id])
   }
 
 

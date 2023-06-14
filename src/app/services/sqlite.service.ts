@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject,SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 import {
+  databaseArtistMediaOne, databaseArtMediaFour,
   databaseArtMediaOne,
   databaseArtMediaThree,
   databaseArtMediaTwo,
   databaseEightEntry,
   databaseFiveEntry,
-  databaseFourEntry,
+  databaseFourEntry, databaseMediaArtistOne, databaseMediaFour,
   databaseMediaOne,
   databaseMediaThree,
   databaseMediaTwo,
@@ -18,8 +19,8 @@ import {
   databaseSixEntry,
   databaseThree,
   databaseThreeEntry,
-  databaseTwo,
-  databaseTwoEntry,
+  databaseTwo, databaseTwoArt,
+  databaseTwoEntry, databaseTwoRoom,
   getAllArt,
   getAllArtist,
   getAllRooms,
@@ -52,6 +53,10 @@ export class SqliteService implements dataProvider{
   constructor(private sqlite: SQLite) {
 
     try {
+      this.sqlite.deleteDatabase({
+        name: 'mydb',
+        location: 'default'
+      })
       this.sqlite.create({
         name: 'mydb',
         location: 'default'
@@ -78,7 +83,9 @@ export class SqliteService implements dataProvider{
         this.db.executeSql(databaseTwo,[]);
         this.db.executeSql(databaseThree,[]);
         this.db.executeSql(databaseOneRoom,[]);
+        this.db.executeSql(databaseTwoRoom,[]);
         this.db.executeSql(databaseOneArt,[]);
+        this.db.executeSql(databaseTwoArt,[]);
 
         this.db.executeSql(databaseOneEntry,[]);
         this.db.executeSql(databaseTwoEntry,[]);
@@ -92,10 +99,19 @@ export class SqliteService implements dataProvider{
         this.db.executeSql(databaseMediaOne,[]);
         this.db.executeSql(databaseMediaTwo,[]);
         this.db.executeSql(databaseMediaThree,[]);
+        this.db.executeSql(databaseMediaFour,[]);
+        this.db.executeSql(databaseMediaArtistOne,[]);
+
+
 
         this.db.executeSql(databaseArtMediaOne,[]);
         this.db.executeSql(databaseArtMediaTwo,[]);
         this.db.executeSql(databaseArtMediaThree,[]);
+        this.db.executeSql(databaseArtMediaFour,[]);
+
+
+        this.db.executeSql(databaseArtistMediaOne,[]);
+
 
         this.seedRoomData();
         this.seedSearchData();
@@ -173,15 +189,19 @@ export class SqliteService implements dataProvider{
   public async getMediaForItem(isArtist:number,id:number): Promise<media[]>{
     let medias: media[] = [];
 
+
     if(isArtist == 1){
+
       await this.db.executeSql(getArtistMediaIds,[id]).then(async (result) => {
+
         //TODO Make this parallel with Promise.all
         for (let i = 0; i < result.rows.length; i++) {
+
           await this.db.executeSql(getMediaById,[result.rows.item(i).media_idmedia]).then((media)=>{
             for (let i = 0; i < media.rows.length; i++) {
               medias.push({
-                id: media.idmedia,
-                path: media.path
+                id: media.rows.item(i).id,
+                path: media.rows.item(i).path
               })
             }
             })
@@ -201,6 +221,7 @@ export class SqliteService implements dataProvider{
         }
       })
     }
+
     return medias;
 
   }

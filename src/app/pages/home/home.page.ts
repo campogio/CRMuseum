@@ -4,6 +4,7 @@ import {SqliteService} from "../../services/sqlite.service";
 import {SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
 import {Camera} from "@capacitor/camera";
 import {SpeechRecognition} from "@capacitor-community/speech-recognition";
+import {SearchPage} from "../search/search.page";
 
 @Component({
   selector: 'app-home',
