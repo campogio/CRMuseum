@@ -1,2 +1,2 @@
 # CRMuseum
-Project for Applicazioni per Dispositivi Mobili
+Full Stack application developed for the course Applicazioni per Dispositivi Mobili
